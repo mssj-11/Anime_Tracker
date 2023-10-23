@@ -23,3 +23,7 @@ npm install
 ```sh
 npm start dev
 ```
+
+
+#   API
+##  [MYANIMELIST API](https://jikan.moe/)

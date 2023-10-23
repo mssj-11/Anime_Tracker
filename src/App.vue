@@ -1,30 +1,64 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, computed, onMounted } from 'vue'
+
+const query = ref('')
+const my_anime = ref([])
+const search_results = ([])
+
+const my_anime_asc = computed(() => {
+  return my_anime.value.sort((a, b) => {
+    return a.title.localeCompare(b.title)
+  })
+})
+
+const searchAnime = () => {
+  const url = `https://api.jikan.moe/v4/anime?q=${query.value}`
+  fetch(url)
+      .then(response => response.json())
+      .then(response => {
+        search_results.value = response.data
+      })
+}
+
+const handleInput = e => {
+  if (!e.target.value) {
+    search_results.value = []
+  }
+}
+
+const addAnime = anime => {
+  search_results.value = []
+  query.value = ''
+
+  my_anime.value.push({
+    id: anime.mal_id,
+    title: anime.title,
+    episodes: anime.episodes,
+    image: anime.image.jpg.image_url,
+    watched_episodes: 0
+  })
+
+  localStorage.setItem('my_anime', JSON.stringify(my_anime.value))
+}
+
+const increaseWatch = anime => {
+  anime.watched_episodes++
+  localStorage.setItem('my_anime', JSON.stringify(my_anime.value))
+}
+
+const decreaseWatch = anime => {
+  anime.watched_episodes--
+  localStorage.setItem('my_anime', JSON.stringify(my_anime.value))
+}
+
+onMounted(() => {
+  my_anime.value = JSON.parse(localStorage.getItem('my_anime')) || []
+})
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <main>Helloo, World</main>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
