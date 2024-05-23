@@ -9,3 +9,6 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 ###  [DEMO](https://anime-tracker-list.netlify.app/)
 <p align="center"><img src="preview.png"></p>
+
+
+<p align="center"><img src="screencapture.png" /></p>
